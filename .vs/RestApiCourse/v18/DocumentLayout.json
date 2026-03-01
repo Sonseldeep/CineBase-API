@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\GPT-learn\\RestApiCourse\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{673E972B-89CF-4EA1-B78D-A1E90A42E6E6}|Movies.Application\\Movies.Application.csproj|d:\\gpt-learn\\restapicourse\\movies.application\\validators\\movievalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{673E972B-89CF-4EA1-B78D-A1E90A42E6E6}|Movies.Application\\Movies.Application.csproj|solutionrelative:movies.application\\validators\\movievalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{673E972B-89CF-4EA1-B78D-A1E90A42E6E6}|Movies.Application\\Movies.Application.csproj|d:\\gpt-learn\\restapicourse\\movies.application\\movies.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{673E972B-89CF-4EA1-B78D-A1E90A42E6E6}|Movies.Application\\Movies.Application.csproj|solutionrelative:movies.application\\movies.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Movies.Application",
+              "DocumentMoniker": "D:\\GPT-learn\\RestApiCourse\\Movies.Application\\Movies.Application.csproj",
+              "RelativeDocumentMoniker": "Movies.Application\\Movies.Application.csproj",
+              "ToolTip": "D:\\GPT-learn\\RestApiCourse\\Movies.Application\\Movies.Application.csproj",
+              "RelativeToolTip": "Movies.Application\\Movies.Application.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-03-01T11:29:15.612Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MovieValidator.cs",
+              "DocumentMoniker": "D:\\GPT-learn\\RestApiCourse\\Movies.Application\\Validators\\MovieValidator.cs",
+              "RelativeDocumentMoniker": "Movies.Application\\Validators\\MovieValidator.cs",
+              "ToolTip": "D:\\GPT-learn\\RestApiCourse\\Movies.Application\\Validators\\MovieValidator.cs",
+              "RelativeToolTip": "Movies.Application\\Validators\\MovieValidator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-01T11:29:12.93Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
