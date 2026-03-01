@@ -1,44 +1,67 @@
+using FluentValidation;
 using Movies.Application.Models;
 using Movies.Application.Repositories;
 
 namespace Movies.Application.Services;
 
-public class MovieService(IMoviesRepository moviesRepository) : IMovieService
+public class MovieService : IMovieService
 {
-    public Task<bool> CreateAsync(Movie movie)
+    private readonly IMoviesRepository _moviesRepository;
+    // inject the validator to validate the movie before creating or updating it
+    private readonly IValidator<Movie> _movieValidator;
+
+    public MovieService(IMoviesRepository moviesRepository, IValidator<Movie> movieValidator)
     {
-        return  moviesRepository.CreateAsync(movie);
+        _moviesRepository = moviesRepository;
+        _movieValidator = movieValidator;
+    }
+
+    public async Task<bool> CreateAsync(Movie movie)
+    {
+       
+        movie.Genres = movie.Genres
+            .Where(g => !string.IsNullOrWhiteSpace(g.Trim()))
+            .Select(g => g.Trim().ToLowerInvariant())
+            .Distinct()
+            .ToList();
+        
+        // validate the movie before creating it
+        // and catch in mapping in API layer
+        await _movieValidator.ValidateAndThrowAsync(movie);
+        return  await _moviesRepository.CreateAsync(movie);
     }
 
     public Task<Movie?> GetByIdAsync(Guid id)
     {
-        return  moviesRepository.GetByIdAsync(id);
+        return  _moviesRepository.GetByIdAsync(id);
     }
 
     public Task<Movie?> GetBySlugAsync(string slug)
     {
-        return  moviesRepository.GetBySlugAsync(slug);
+        return  _moviesRepository.GetBySlugAsync(slug);
     }
 
     public Task<IEnumerable<Movie>> GetAllAsync()
     {
-        return  moviesRepository.GetAllAsync();
+        return  _moviesRepository.GetAllAsync();
     }
 
     public async Task<Movie?> UpdateAsync(Movie movie)
     {
-        var movieExists = await moviesRepository.ExistsByIdAsync(movie.Id);
+        // validate the movie before updating it
+        await _movieValidator.ValidateAndThrowAsync(movie);
+        var movieExists = await _moviesRepository.ExistsByIdAsync(movie.Id);
         if (!movieExists)
         {
             return null;
         }
 
-        await moviesRepository.UpdateAsync(movie);
+        await _moviesRepository.UpdateAsync(movie);
         return movie;
     }
 
     public Task<bool> DeleteByIdAsync(Guid id)
     {
-        return  moviesRepository.DeleteByIdAsync(id);
+        return  _moviesRepository.DeleteByIdAsync(id);
     }
 }
