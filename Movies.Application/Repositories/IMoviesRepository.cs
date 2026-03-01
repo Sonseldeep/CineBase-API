@@ -5,10 +5,11 @@ namespace Movies.Application.Repositories;
 public interface IMoviesRepository
 {
     Task<bool> CreateAsync(Movie movie);
-    Task<Movie?> GetByIdAsync(string id);
+    Task<Movie?> GetByIdAsync(Guid id);
     Task<Movie?> GetBySlugAsync(string slug);
     Task<IEnumerable<Movie>> GetAllAsync();
     Task<bool> UpdateAsync(Movie movie);
-    Task<bool> DeleteByIdAsync(string id);
+    Task<bool> DeleteByIdAsync(Guid id);
+    Task<bool> ExistsByIdAsync(Guid id);
 
 }
