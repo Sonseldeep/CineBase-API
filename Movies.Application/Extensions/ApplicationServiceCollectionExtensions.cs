@@ -1,15 +1,24 @@
 using Microsoft.Extensions.DependencyInjection;
+using Movies.Application.Database;
 using Movies.Application.Models;
 using Movies.Application.Repositories;
+using Movies.Application.Services;
 
 namespace Movies.Application.Extensions;
 
 public static class ApplicationServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static void AddApplication(this IServiceCollection services)
     {
         
         services.AddSingleton<IMoviesRepository, MovieRepository>();
-        return services;
+        services.AddSingleton<IMovieService,MovieService>();
     }
+
+    public static void AddDatabase(this IServiceCollection services, string connectionString)
+    {
+        services.AddSingleton<IDbConnectionFactory>(_ => new NpgsqlConnectionFactory(connectionString));
+        services.AddSingleton<DbInitializer>();
+    }
+    
 }
