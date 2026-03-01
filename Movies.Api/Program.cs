@@ -1,3 +1,4 @@
+using Movies.Api.Mapping;
 using Movies.Application.Database;
 using Movies.Application.Extensions;
 using Scalar.AspNetCore;
@@ -27,6 +28,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+// use middleware before MapControllers
+app.UseMiddleware<ValidationMappingMiddleware>();
 app.MapControllers();
 
 var dbInitializer = app.Services.GetRequiredService<DbInitializer>();
