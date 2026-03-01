@@ -24,6 +24,8 @@ public class DbInitializer(IDbConnectionFactory dbConnectionFactory)
                                       """);
         
         
+        // note: 
+        // in pgsql, it automatically adds on delete cascade when we add a foreign key constraint, so when we delete a movie, all its genres will be deleted as well
         await connection.ExecuteAsync($"""
                                        create table if not exists genres (
                                            movieId UUID references movies (id),
