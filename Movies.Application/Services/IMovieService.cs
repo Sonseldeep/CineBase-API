@@ -4,12 +4,12 @@ namespace Movies.Application.Services;
 
 public interface IMovieService
 {
-    Task<bool> CreateAsync(Movie movie);
-    Task<Movie?> GetByIdAsync(Guid id);
-    Task<Movie?> GetBySlugAsync(string slug);
-    Task<IEnumerable<Movie>> GetAllAsync();
+    Task<bool> CreateAsync(Movie movie, CancellationToken token = default);
+    Task<Movie?> GetByIdAsync(Guid id, CancellationToken token = default);
+    Task<Movie?> GetBySlugAsync(string slug, CancellationToken token = default);
+    Task<IEnumerable<Movie>> GetAllAsync(CancellationToken token = default);
     // here this is different from the repository because we want to return the updated movie after update
-    Task<Movie?> UpdateAsync(Movie movie);
-    Task<bool> DeleteByIdAsync(Guid id);
+    Task<Movie?> UpdateAsync(Movie movie, CancellationToken token = default);
+    Task<bool> DeleteByIdAsync(Guid id, CancellationToken token = default);
   
 }

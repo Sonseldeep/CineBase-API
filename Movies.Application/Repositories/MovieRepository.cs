@@ -13,18 +13,20 @@ public class MovieRepository : IMoviesRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task<bool> CreateAsync(Movie movie)
+    public async Task<bool> CreateAsync(Movie movie, CancellationToken token = default)
     {
         // Create a newconnection
         using var connection = await _dbConnectionFactory.CreateConnectionAsync();
         // begin a transaction
         using var transaction = connection.BeginTransaction();
         // Insert the movie
+        // we can skip commandDefination, but it allows to pass cancellation token
         var result = await connection.ExecuteAsync(new CommandDefinition(
             """
             insert into movies (id, slug, title, yearofrelease)
             values(@Id, @Slug, @Title, @YearOfRelease)
-            """, movie));
+            """, movie, cancellationToken: token
+            ));
 
         // Insert the genres
         if (result > 0)
@@ -35,7 +37,9 @@ public class MovieRepository : IMoviesRepository
                     """
                     insert into genres (movieId, name)
                     values(@MovieId, @Name)
-                    """, new { MovieId = movie.Id, Name = genre }));
+                    """, new { MovieId = movie.Id, Name = genre },
+                    cancellationToken: token
+                    ));
             }
         }
         // commit the transaction
@@ -44,14 +48,16 @@ public class MovieRepository : IMoviesRepository
 
     }
 
-    public async Task<Movie?> GetByIdAsync(Guid id)
+    public async Task<Movie?> GetByIdAsync(Guid id, CancellationToken token = default)
     {
-        using var connection = await _dbConnectionFactory.CreateConnectionAsync();
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         var movie = await connection.QuerySingleOrDefaultAsync<Movie>(
             new CommandDefinition("""
                                   select * from movies
                                   where id = @id
-                                  """, new {id}));
+                                  """, new {id},
+                                  cancellationToken: token
+                                  ));
 
         if (movie is null)
         {
@@ -64,7 +70,9 @@ public class MovieRepository : IMoviesRepository
                                    
                                   select name from genres
                                   where movieid = @id
-                                  """, new {id}));
+                                  """, new {id},
+                                  cancellationToken: token
+                                  ));
         foreach (var genre in genres)
         {
             movie.Genres.Add(genre);
@@ -73,15 +81,16 @@ public class MovieRepository : IMoviesRepository
         
     }
 
-    public async Task<Movie?> GetBySlugAsync(string slug)
+    public async Task<Movie?> GetBySlugAsync(string slug, CancellationToken token = default)
     {
-        using var connection = await _dbConnectionFactory.CreateConnectionAsync();
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         var movie = await connection.QuerySingleOrDefaultAsync<Movie>(
             new CommandDefinition("""
                                   select * from movies
                                   where slug = @slug
-                                  """, new {slug}
-            ));
+                                  """, new {slug},
+                                  cancellationToken: token
+                                  ));
 
         if (movie is null)
         {
@@ -94,8 +103,9 @@ public class MovieRepository : IMoviesRepository
                                    
                                   select name from genres
                                   where movieid = @id
-                                  """, new {id = movie.Id}
-            ));
+                                  """, new {id = movie.Id},
+                                  cancellationToken: token
+                                  ));
         foreach (var genre in genres)
         {
             movie.Genres.Add(genre);
@@ -105,9 +115,9 @@ public class MovieRepository : IMoviesRepository
 
     }
 
-    public async Task<IEnumerable<Movie>> GetAllAsync()
+    public async Task<IEnumerable<Movie>> GetAllAsync(CancellationToken token = default)
     {
-        using var connection = await _dbConnectionFactory.CreateConnectionAsync();
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         var result = await connection.QueryAsync(new CommandDefinition("""
                    select m.*, string_agg(g.name, ',') as genres
                    from movies m left join genres g 
@@ -125,15 +135,16 @@ public class MovieRepository : IMoviesRepository
         
     }
 
-    public async  Task<bool> UpdateAsync(Movie movie)
+    public async  Task<bool> UpdateAsync(Movie movie, CancellationToken token = default)
     {
-        using var connection = await _dbConnectionFactory.CreateConnectionAsync();
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         using var transaction = connection.BeginTransaction();
 
         await connection.ExecuteAsync(new CommandDefinition("""
               delete from genres 
               where movieid = @id
-              """, new {id = movie.Id}
+              """, new {id = movie.Id},
+                cancellationToken: token
         ));
 
         foreach (var genre in movie.Genres)
@@ -141,7 +152,8 @@ public class MovieRepository : IMoviesRepository
             await connection.ExecuteAsync(new CommandDefinition("""
                   insert into genres (movieId, name)
                   values (@MovieId, @Name)
-                  """, new { MovieId = movie.Id, Name = genre }
+                  """, new { MovieId = movie.Id, Name = genre },
+                    cancellationToken: token
                 ));
                                                                
         }
@@ -154,7 +166,8 @@ public class MovieRepository : IMoviesRepository
                 yearOfRelease = @YearOfRelease
             
             where id = @Id
-            """, movie
+            """, movie,
+            cancellationToken: token
         ));
 
         transaction.Commit();
@@ -162,36 +175,39 @@ public class MovieRepository : IMoviesRepository
         
     }
 
-    public async Task<bool> DeleteByIdAsync(Guid id)
+    public async Task<bool> DeleteByIdAsync(Guid id, CancellationToken token = default)
     {
-        using var connection = await _dbConnectionFactory.CreateConnectionAsync();
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         using var transaction = connection.BeginTransaction();
         
         // first delete all the genres of the movie because of the foreign key constraint
         await connection.ExecuteAsync(new CommandDefinition("""
               delete from genres 
               where movieid = @id
-              """, new {id}
+              """, new {id},
+                cancellationToken: token
         ));
         
         var result =  await connection.ExecuteAsync(new CommandDefinition("""
               delete from movies 
               where id = @id
-              """, new {id}
+              """, new {id},
+                cancellationToken: token
         ));
         
         transaction.Commit();
         return result > 0;
     }
 
-    public async Task<bool> ExistsByIdAsync(Guid id)
+    public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken token = default)
     {
-        using var connection = await _dbConnectionFactory.CreateConnectionAsync();
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         var result = await connection.ExecuteScalarAsync<bool>(new CommandDefinition("""
             select count(1)
             from movies
             where id = @id
-            """, new {id}
+            """, new {id},
+            cancellationToken: token
         ));
         return result;
     }
