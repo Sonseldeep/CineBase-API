@@ -10,14 +10,14 @@ public static  class ContractMapping
     {
         return new Movie
         {
-            Id = $"m_{Guid.CreateVersion7()}",
+            Id = Guid.CreateVersion7(),
             Title = request.Title,
             YearOfRelease = request.YearOfRelease,
             Genres = request.Genres.ToList()
         };
     }
 
-    public static Movie MapToMovie(this UpdateMovieRequest request, string id)
+    public static Movie MapToMovie(this UpdateMovieRequest request, Guid id)
     {
         return new Movie
         {
