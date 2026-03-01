@@ -4,7 +4,7 @@ namespace Movies.Application.Models;
 
 public partial class Movie
 {
-    public required string Id { get; init; }
+    public required Guid Id { get; init; }
 
     public string Slug => GenerateSlug();
     
