@@ -1,4 +1,6 @@
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Movies.Application.AssemblyMarker;
 using Movies.Application.Database;
 using Movies.Application.Models;
 using Movies.Application.Repositories;
@@ -13,6 +15,8 @@ public static class ApplicationServiceCollectionExtensions
         
         services.AddSingleton<IMoviesRepository, MovieRepository>();
         services.AddSingleton<IMovieService,MovieService>();
+        // register all validators in the assembly as singleton
+        services.AddValidatorsFromAssemblyContaining<IApplicationMarker>(ServiceLifetime.Singleton);
     }
 
     public static void AddDatabase(this IServiceCollection services, string connectionString)
