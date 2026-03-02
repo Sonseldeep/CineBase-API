@@ -3,7 +3,7 @@ using Movies.Contracts.Responses;
 
 namespace Movies.Api.Mapping;
 
-public class ValidationMappingMiddleware
+public sealed class ValidationMappingMiddleware
 {
     private readonly RequestDelegate _next;
 
