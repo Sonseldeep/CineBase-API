@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.env = .env
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csproj", "{C26A0838-0F2A-45D5-8DF8-28676F999C5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,5 +31,9 @@ Global
 		{71677CE8-B2F4-4C52-A66D-E9F80171EA0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71677CE8-B2F4-4C52-A66D-E9F80171EA0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71677CE8-B2F4-4C52-A66D-E9F80171EA0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C26A0838-0F2A-45D5-8DF8-28676F999C5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C26A0838-0F2A-45D5-8DF8-28676F999C5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C26A0838-0F2A-45D5-8DF8-28676F999C5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C26A0838-0F2A-45D5-8DF8-28676F999C5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
