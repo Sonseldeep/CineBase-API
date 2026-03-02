@@ -1,13 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Mapping;
-using Movies.Application.Repositories;
 using Movies.Application.Services;
 using Movies.Contracts.Requests;
 
 namespace Movies.Api.Controllers;
 
+[Authorize]
 [ApiController]
-
 public sealed class MoviesController(IMovieService movieService) : ControllerBase
 {
     [HttpPost(ApiEndpoints.ApiEndpoints.Movies.Create)]
