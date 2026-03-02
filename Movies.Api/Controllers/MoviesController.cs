@@ -1,15 +1,16 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Features.Constants;
 using Movies.Api.Mapping;
 using Movies.Application.Services;
 using Movies.Contracts.Requests;
 
 namespace Movies.Api.Controllers;
 
-[Authorize]
 [ApiController]
 public sealed class MoviesController(IMovieService movieService) : ControllerBase
 {
+    [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPost(ApiEndpoints.ApiEndpoints.Movies.Create)]
 
     public async Task<IActionResult> Create([FromBody] CreateMovieRequest request,
@@ -20,6 +21,7 @@ public sealed class MoviesController(IMovieService movieService) : ControllerBas
         return CreatedAtAction(nameof(Get), new { idOrSlug = movie.Id }, movie);
     }
 
+    
     [HttpGet(ApiEndpoints.ApiEndpoints.Movies.Get)]
 
     public async Task<IActionResult> Get([FromRoute] string idOrSlug,
@@ -39,6 +41,7 @@ public sealed class MoviesController(IMovieService movieService) : ControllerBas
     }
 
 
+    
     [HttpGet(ApiEndpoints.ApiEndpoints.Movies.GetAll)]
     public async Task<IActionResult> GetAll(CancellationToken token)
     {
@@ -48,6 +51,7 @@ public sealed class MoviesController(IMovieService movieService) : ControllerBas
         return Ok(moviesResponse);
     }
 
+    [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPut(ApiEndpoints.ApiEndpoints.Movies.Update)]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateMovieRequest request,
         CancellationToken token)
@@ -63,6 +67,7 @@ public sealed class MoviesController(IMovieService movieService) : ControllerBas
         return Ok(response);
     }
 
+    [Authorize(AuthConstants.AdminUserPolicyName)]
     [HttpDelete(ApiEndpoints.ApiEndpoints.Movies.Delete)]
 
     public async Task<IActionResult> Delete([FromRoute] Guid id,
