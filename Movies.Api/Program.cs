@@ -1,7 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Movies.Api.Features.Constants;
+using Movies.Api.Auth.Constants;
 using Movies.Api.Mapping;
 using Movies.Application.Database;
 using Movies.Application.Extensions;
