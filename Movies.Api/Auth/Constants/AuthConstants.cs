@@ -1,4 +1,4 @@
-namespace Movies.Api.Features.Constants;
+namespace Movies.Api.Auth.Constants;
 
 public static class AuthConstants
 {
