@@ -1,4 +1,5 @@
 using FluentValidation;
+using Movies.Application.Database;
 using Movies.Application.Models;
 using Movies.Application.Repositories;
 
@@ -9,11 +10,13 @@ public class MovieService : IMovieService
     private readonly IMoviesRepository _moviesRepository;
     // inject the validator to validate the movie before creating or updating it
     private readonly IValidator<Movie> _movieValidator;
+    private readonly IRatingRepository _ratingRepository;
 
-    public MovieService(IMoviesRepository moviesRepository, IValidator<Movie> movieValidator)
+    public MovieService(IMoviesRepository moviesRepository, IValidator<Movie> movieValidator, IRatingRepository ratingRepository)
     {
         _moviesRepository = moviesRepository;
         _movieValidator = movieValidator;
+        _ratingRepository = ratingRepository;
     }
 
     public async Task<bool> CreateAsync(Movie movie, CancellationToken token = default)
@@ -56,7 +59,17 @@ public class MovieService : IMovieService
             return null;
         }
 
-        await _moviesRepository.UpdateAsync(movie,userid, token);
+        await _moviesRepository.UpdateAsync(movie, token);
+
+        if (!userid.HasValue)
+        {
+            var rating = await _ratingRepository.GetRatingAsync(movie.Id, token);
+            movie.Rating = rating;
+            return movie;
+        }
+        var ratings = await _ratingRepository.GetRatingAsync(movie.Id,userid.Value, token);
+        movie.Rating = ratings.Rating;
+        movie.UserRating = ratings.UserRating;
         return movie;
     }
 
