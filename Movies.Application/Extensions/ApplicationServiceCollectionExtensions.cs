@@ -13,6 +13,7 @@ public static class ApplicationServiceCollectionExtensions
     public static void AddApplication(this IServiceCollection services)
     {
         services.AddSingleton<IRatingRepository, RatingRepository>();
+        services.AddSingleton<IRatingService, RatingService>();
         services.AddSingleton<IMoviesRepository, MovieRepository>();
         services.AddSingleton<IMovieService,MovieService>();
         // register all validators in the assembly as singleton
